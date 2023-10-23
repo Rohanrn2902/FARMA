@@ -1,0 +1,67 @@
+create database farmandi;
+
+use farmandi
+
+create table customer(
+cphoneno int primary key,
+cfnanme varchar(50) not null,
+cmname varchar(50),
+clname varchar(50) not null,
+cemail varchar(50) not null,
+caadhar varchar(50) not null,
+caddress varchar(50) not null,
+cdistrict varchar(50) not null,
+cpassword varchar(50) not null
+);
+
+create table farmer(
+fphoneno varchar(20) primary key,
+ffnanme varchar(50) not null,
+fmname varchar(50),
+fname varchar(50) not null,
+femail varchar(50) not null,
+faadhar varchar(50) not null,
+faddress varchar(50) not null,
+fdistrict varchar(50) not null,
+fpassword varchar(50) not null
+);
+
+
+create table product(
+productid int primary key,
+productname varchar(255) not null,
+shelflife VARCHAR(50) NOT NULL 
+);
+
+CREATE TABLE product_farmer (
+product_farmer_id INT PRIMARY KEY AUTO_INCREMENT,
+productid INT,
+fphoneno varchar(20),
+listedon DATE NOT NULL,
+lastdate DATE NOT NULL,
+quantity_instock INT not null,
+sold INT,
+quotedprice NUMERIC(8, 2) NOT NULL,
+finalprice NUMERIC(8, 2) NOT NULL,
+FOREIGN KEY (productid) REFERENCES product(productid),
+FOREIGN KEY (fphoneno) REFERENCES farmer(fphoneno)
+);
+
+CREATE TABLE customer_product (
+    product_customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    productid INT,
+    cphoneno INT,
+    purchaseon DATE NOT NULL,
+    delivery_date DATE NOT NULL,
+    quantity INT NOT NULL,
+    quotedprice NUMERIC(8, 2),
+    sellprice NUMERIC(8, 2),
+    FOREIGN KEY (productid) REFERENCES product(productid),
+    FOREIGN KEY (cphoneno) REFERENCES customer(cphoneno),
+    FOREIGN KEY (productid, quotedprice) REFERENCES product_farmer(productid, quotedprice)
+);
+
+INSERT INTO customer_product (productid, cphoneno, purchaseon, delivery_date, quantity, quotedprice, sellprice)
+VALUES (your_product_id,  your_customer_id,  CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 DAY), your_quantity, quotedprice + 0.1 * quotedprice  
+);
+
